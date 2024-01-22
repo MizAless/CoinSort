@@ -400,6 +400,7 @@ MonoBehaviour:
   DealButton: {fileID: 889485643}
   CoinsDealSpawn: {fileID: 2118065205}
   CoinPrefab: {fileID: 3875717618067577748, guid: 9d13c3e1a60122d448714c0c9eab0221, type: 3}
+  MoneyTarget: {fileID: 1635432469}
 --- !u!114 &188888173
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2794,6 +2795,51 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1ec23f70f5c546459eb184c679a55d3, type: 3}
+--- !u!1 &1635432469
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1635432470}
+  - component: {fileID: 1635432471}
+  m_Layer: 0
+  m_Name: MoneyTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1635432470
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1635432469}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.5596735, y: -0.0021442361, z: -0.0031749448, w: -0.82870436}
+  m_LocalPosition: {x: 1.377, y: 2.8997028, z: -2.111}
+  m_LocalScale: {x: 0.24871999, y: 0.028360005, z: 0.24871999}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1635432471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1635432469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f73fd9db8f17d2e4dbe72abbcd44c67d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotateCoin: {fileID: 6741346749482260388}
 --- !u!114 &1655385634 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 875022623944547523, guid: b1ec23f70f5c546459eb184c679a55d3, type: 3}
@@ -3977,20 +4023,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 844082469594914690, guid: 6c8869efa5ebaa348942f111633dd4ca, type: 3}
   m_PrefabInstance: {fileID: 8035234119052944193}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7417483174949912699
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6741346749482260388}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11c5fba1f12fc6e4fb0f2201807ccd39, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rotationSpeed: 150
-  PCposition: {fileID: 2048253578}
 --- !u!1001 &8035234119052944193
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4003,18 +4035,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RotateCoin
       objectReference: {fileID: 0}
-    - target: {fileID: 5312672277689118932, guid: 6c8869efa5ebaa348942f111633dd4ca, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.24871668
-      objectReference: {fileID: 0}
-    - target: {fileID: 5312672277689118932, guid: 6c8869efa5ebaa348942f111633dd4ca, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.028355248
-      objectReference: {fileID: 0}
-    - target: {fileID: 5312672277689118932, guid: 6c8869efa5ebaa348942f111633dd4ca, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.24871671
-      objectReference: {fileID: 0}
+    - target: {fileID: 1184241205657954910, guid: 6c8869efa5ebaa348942f111633dd4ca, type: 3}
+      propertyPath: PCposition
+      value: 
+      objectReference: {fileID: 2048253578}
     - target: {fileID: 5312672277689118932, guid: 6c8869efa5ebaa348942f111633dd4ca, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.298
@@ -4059,9 +4083,6 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 844082469594914690, guid: 6c8869efa5ebaa348942f111633dd4ca, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7417483174949912699}
     - targetCorrespondingSourceObject: {fileID: 9112254738230208924, guid: 6c8869efa5ebaa348942f111633dd4ca, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
@@ -4073,6 +4094,7 @@ SceneRoots:
   - {fileID: 1471524945}
   - {fileID: 963194228}
   - {fileID: 2048253578}
+  - {fileID: 1635432470}
   - {fileID: 8035234119052944193}
   - {fileID: 705507995}
   - {fileID: 2044614274}

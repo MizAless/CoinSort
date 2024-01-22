@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] public GameObject DealButton;
     [SerializeField] public GameObject CoinsDealSpawn;
     [SerializeField] public GameObject CoinPrefab;
+    [SerializeField] public GameObject MoneyTarget;
     public Dictionary<int, int> NeedCoinsToMerge = new Dictionary<int, int>();// List where key == CoinLevel, value == CoinsToMergeInTray
 
 

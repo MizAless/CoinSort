@@ -5808,6 +5808,8 @@ MonoBehaviour:
   CoinsObject: {fileID: 2851746731581576627}
   CoinPrefab: {fileID: 3875717618067577748, guid: 9d13c3e1a60122d448714c0c9eab0221, type: 3}
   MergeLight: {fileID: 9193075443477642082}
+  CoinsCloudPrefab: {fileID: 3577198986901173135, guid: 3a5fbf2869dd2c24595e174d3863918e, type: 3}
+  MergePrizePrefab: {fileID: 4409558006031214303, guid: 52041045415c0684487f236d403bb196, type: 3}
   Smoke: {fileID: 2354571581339386256}
   Coins: []
   IsReadyToMerge: 0

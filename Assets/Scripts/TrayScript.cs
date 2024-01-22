@@ -12,8 +12,10 @@ public class TrayScript : MonoBehaviour
     [SerializeField] private GameObject CoinsObject;
     [SerializeField] private GameObject CoinPrefab;
     [SerializeField] private GameObject MergeLight;
+    [SerializeField] private GameObject CoinsCloudPrefab;
+    [SerializeField] private GameObject MergePrizePrefab;
     [SerializeField] private ParticleSystem Smoke;
-   
+
 
     private static int MaxCoinCount = 10;
 
@@ -173,8 +175,8 @@ public class TrayScript : MonoBehaviour
 
     public bool RelocateCoinsInTray(TrayScript otherTray)
     {
-        if (otherTray.Coins.Count == MaxCoinCount) 
-            return false; 
+        if (otherTray.Coins.Count == MaxCoinCount)
+            return false;
         GetComponent<SelectableTray>().isUnselectable = true;
         otherTray.GetComponent<SelectableTray>().isUnselectable = true;
         List<int> coinIndexes = GetSameLevelCoinIndex();
@@ -251,6 +253,8 @@ public class TrayScript : MonoBehaviour
 
     public void Merge()
     {
+        Instantiate(CoinsCloudPrefab, Coins.First().transform.position, Quaternion.identity);
+        Instantiate(MergePrizePrefab, Coins.First().transform.position, Quaternion.Euler(45f, 0f, 0f));
         Smoke.Play();
         GetComponent<SelectableTray>().isUnselectable = true;
         int nextCoinLevel = Coins.First().GetLevel() + 1;
