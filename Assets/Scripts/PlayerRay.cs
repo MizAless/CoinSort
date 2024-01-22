@@ -26,6 +26,9 @@ public class PlayerRay : MonoBehaviour
         if (tray == null)
             return;
 
+        if (tray.isUnselectable)
+            return;
+
         if (tray.GetComponent<LockTrayScript>().isLocked)
             return;
 

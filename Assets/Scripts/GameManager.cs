@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] public PlayerRay playerRay;
     [SerializeField] public GameObject ShuffleButton;
     [SerializeField] public GameObject DealButton;
+    [SerializeField] public GameObject CoinsDealSpawn;
+    [SerializeField] public GameObject CoinPrefab;
     public Dictionary<int, int> NeedCoinsToMerge = new Dictionary<int, int>();// List where key == CoinLevel, value == CoinsToMergeInTray
 
 
@@ -107,7 +109,7 @@ public class GameManager : MonoBehaviour
         foreach (TrayScript tray in trayList)
         {
             playerRay.UnselectAll();
-            if (tray.IsReadyToMerge)
+            if (tray.IsReadyToMerge && !tray.GetComponent<SelectableTray>().isUnselectable)
             {
                 tray.Merge();
                 count++;
@@ -159,6 +161,8 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
+        if (CheckUnselecableTrays())
+            return;
         DeleteAllCoins();
         _playerLevel.ResetLevel();
         for (int i = 0; i < 3; i++)
@@ -191,8 +195,20 @@ public class GameManager : MonoBehaviour
 
     }
 
+    private bool CheckUnselecableTrays()
+    {
+        foreach (var tray in trayList)
+        {
+            if (tray.GetComponent<SelectableTray>().isUnselectable)
+                return true;
+        }
+        return false;
+    }
+
     public void Deal()
     {
+        if (CheckUnselecableTrays())
+            return;
         _сoinStorage.DealCoins();
 
         Dictionary<int, int> CoinsCountToSpawn = new Dictionary<int, int>();
@@ -231,43 +247,41 @@ public class GameManager : MonoBehaviour
             }
             TraysToAddCoins.Add(trayList[randomIndex]);
         }
+        List<GameObject> spawnedCoins = new List<GameObject>();
         for (int i = 0; i < TraysToAddCoins.Count; i++)
         {
+            
             int level = i + 1;
-            //for (int j = 0; j < CoinsCountToSpawn[level]; j++)
-            //{
-            //    TraysToAddCoins[i].AddCoins(1, level);
-            //}
             int j = 0;
-            while (j < CoinsCountToSpawn[level] && TraysToAddCoins[i].AddCoins(1, level))
+            bool newCoinIsNull = false;
+            while (j < CoinsCountToSpawn[level] && !newCoinIsNull)
             {
+                var newCoin = TraysToAddCoins[i].AddCoins(1, level);
+                if (newCoin == null)
+                {
+                    newCoinIsNull = true;
+                    break;
+                }
+
+                TraysToAddCoins[i].GetComponent<SelectableTray>().isUnselectable = true;
+                newCoin.SetActive(false);
+                spawnedCoins.Add(Instantiate(CoinPrefab, CoinsDealSpawn.transform.position, Quaternion.Euler(-90f, 0f, 0f)));
+                spawnedCoins.Last().GetComponent<CoinScript>().UpdateCoinLevel(level);
+                StartCoroutine(TraysToAddCoins[i].MoveCoinToTray(spawnedCoins.Last().transform, newCoin.transform.position, newCoin, TraysToAddCoins[i], true));
                 j++;
+                
             }
             CoinsCountToSpawn[level] -= j;
-            print(CoinsCountToSpawn[level]);
-
-            //ƒќѕ»—ј“№! »де€ в том чтобы перекидывать на другие лайны монетки, которые непоместились в этот лайн.
-
+            //print(CoinsCountToSpawn[level]);
         }
-        //var list = CoinsCountToSpawn.Values.Where(value => value != 0).ToList();
+
         TraysToAddCoins.Clear();
         for (int i = 1; i <= CoinsCountToSpawn.Count; i++)
         {
             if (CoinsCountToSpawn[i] <= 1) { continue; }
             int randomIndex;
             var CheckedTrays = trayList.Count(tray => tray.Coins.Count == 10 || tray.GetComponent<LockTrayScript>().isLocked);
-            //if (trayList.Count - CheckedTrays >= NeedCoinsToMerge.Count)
-            //{
-            //    randomIndex = UnityEngine.Random.Range(0, trayList.Count(tray => !tray.GetComponent<LockTrayScript>().isLocked));
-            //    while (TraysToAddCoins.Any(tray => tray == trayList[randomIndex]) || trayList[randomIndex].Coins.Count == 10)
-            //    {
-            //        randomIndex = UnityEngine.Random.Range(0, trayList.Count(tray => !tray.GetComponent<LockTrayScript>().isLocked));
-            //    }
-            //}
-            //else
-            //{
             randomIndex = UnityEngine.Random.Range(0, trayList.Count(tray => !tray.GetComponent<LockTrayScript>().isLocked));
-            //}
             TraysToAddCoins.Add(trayList[randomIndex]);
         }
 
@@ -275,14 +289,73 @@ public class GameManager : MonoBehaviour
         {
             int level = i + 1;
             int j = 0;
-            while (TraysToAddCoins[i].AddCoins(1, level) && j < CoinsCountToSpawn[level])
+            bool newCoinIsNull = false;
+            while (j < CoinsCountToSpawn[level] && !newCoinIsNull)
             {
+                var newCoin = TraysToAddCoins[i].AddCoins(1, level);
+                if (newCoin == null)
+                {
+                    newCoinIsNull = true;
+                    break;
+                }
+
+                TraysToAddCoins[i].GetComponent<SelectableTray>().isUnselectable = true;
+                newCoin.SetActive(false);
+                spawnedCoins.Add(Instantiate(CoinPrefab, CoinsDealSpawn.transform.position, Quaternion.Euler(-90f, 0f, 0f)));
+                spawnedCoins.Last().GetComponent<CoinScript>().UpdateCoinLevel(level);
+                StartCoroutine(TraysToAddCoins[i].MoveCoinToTray(spawnedCoins.Last().transform, newCoin.transform.position, newCoin, TraysToAddCoins[i], true));
                 j++;
+
             }
             CoinsCountToSpawn[level] -= j;
             //print(CoinsCountToSpawn[level]);
         }
+
+
+
+
+        //List<GameObject> spawnedCoins = new List<GameObject>();
+        //foreach (var level in CoinsCountToSpawn.Keys)
+        //{
+        //    for (int i = 0; i < CoinsCountToSpawn[level]; i++)
+        //    {
+        //        var newCoin = Instantiate(CoinPrefab, CoinsDealSpawn.transform.position, Quaternion.identity);
+        //        newCoin.SetActive(false);
+        //        spawnedCoins.Add(newCoin);
+        //    }
+        //}
+
+        //StartCoroutine(MoveCoinsToTrays(spawnedCoins, TraysToAddCoins));
+
+
+
+
+
+
+
     }
+
+    //public bool AddCoinOnPosition( int level)
+    //{
+
+
+
+    //    for (int i = 0; i < count; i++)
+    //    {
+    //        Vector3 newPos = CoinsObject.transform.position + new Vector3(-0.03799993f, 0.1491f, offset);
+
+    //        var newCoin = Instantiate(CoinPrefab, CoinsObject.transform);
+    //        newCoin.transform.localPosition = Vector3.zero;
+    //        newCoin.transform.localPosition += new Vector3(-0.03799993f, 0.1491f, offset);
+    //        newCoin.GetComponent<CoinScript>().UpdateCoinLevel(level);
+    //        //newCoin.SetActive(false);
+    //        offset -= 0.12f;
+    //    }
+
+    //    GetCoinsInTray();
+
+    //    return true;
+    //}
 
 
     public void CheckTraysForMerge()

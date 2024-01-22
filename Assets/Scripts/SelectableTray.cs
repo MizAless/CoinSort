@@ -11,6 +11,7 @@ public class SelectableTray : MonoBehaviour
     public List<Transform> Coins = new List<Transform>();
 
     public bool isSelected { get; private set; } = false;
+    [SerializeField]  public bool isUnselectable = false;
 
     private TrayScript _trayScript;
 
