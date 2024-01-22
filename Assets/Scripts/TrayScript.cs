@@ -125,7 +125,7 @@ public class TrayScript : MonoBehaviour
             float height = 1.25f - 5f * (t - 0.5f) * (t - 0.5f);
             coinTransform.position = Vector3.Lerp(startPosition, targetPosition, t) + Vector3.up * height;
 
-            float rotationAngle = 720f * t;
+            float rotationAngle = 360f * t;
             coinTransform.rotation = Quaternion.Euler(-90f, rotationAngle, 0f);
 
             yield return null;
